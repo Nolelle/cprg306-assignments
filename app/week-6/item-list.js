@@ -1,90 +1,64 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import Item from "./item";
-
-const items = [ {
-  name: "milk, 4 L 🥛",
-  quantity: 1,
-  category: "dairy",
-},  
- 
- {
-  name: "bread 🍞",
-  quantity: 2,
-  category: "bakery",
-},
- 
- {
-  name: "eggs, dozen 🥚",
-  quantity: 2,
-  category: "dairy",
-},
- 
- {
-  name: "bananas 🍌",
-  quantity: 6,
-  category: "produce",
-},
- 
- {
-  name: "broccoli 🥦",
-  quantity: 3,
-  category: "produce",
-},
- 
- {
-  name: "chicken breasts, 1 kg 🍗",
-  quantity: 1,
-  category: "meat",
-},
- 
- {
-  name: "pasta sauce 🍝",
-  quantity: 3,
-  category: "canned goods",
-},
- 
- {
-  name: "spaghetti, 454 g 🍝",
-  quantity: 2,
-  category: "dry goods",
-},
- 
- {
-  name: "toilet paper, 12 pack 🧻",
-  quantity: 1,
-  category: "household",
-},
- 
- {
-  name: "paper towels, 6 pack",
-  quantity: 1,
-  category: "household",
-},
- 
- {
-  name: "dish soap 🍽️",
-  quantity: 1,
-  category: "household",
-},
- 
- {
-  name: "hand soap 🧼",
-  quantity: 4,
-  category: "household",
-}]
+import items from "./items.json";
 
 export default function ItemList() {
-  const [sortBy, setSortBy] = useState("name")
-  
-  items.sort((a,b) => {})
+  const [sortBy, setSortBy] = useState("category");
 
-    return(
-      <main className="p-4">
-      <ul className="space-y-4">
+  const handleSortByName = (event) => {
+    setSortBy("name");
+  };
+
+  const handleSortByCategory = (event) => {
+    setSortBy("category");
+  };
+
+  const handleGroupByCategory = (event) => {}
+
+  if (sortBy === "name") {
+    items.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (sortBy === "category") {
+    items.sort((a, b) => a.category.localeCompare(b.category));
+  } 
+
+  return (
+    <main className="p-4">
+      <button
+        type="button"
+        onClick={handleSortByName}
+        className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700"
+      >
+        Sort by name
+      </button>
+      <button
+        type="button"        
+        onClick={handleSortByCategory}
+        className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700"
+      >
+        Sort by category
+      </button>
+
+      <button
+        type="button"        
+        onClick={handleGroupByCategory}
+        className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700"
+      >
+       Grouped Category 
+      </button>
+
+      <ul>
+        {items.map((item) => (
+          <li key={item.id}>
+            <Item
+              name={item.name}
+              quantity={item.quantity}
+              category={item.category}
+            />
+          </li>
+        ))}
       </ul>
-      </main>
-    )
-
+    </main>
+  );
 }
