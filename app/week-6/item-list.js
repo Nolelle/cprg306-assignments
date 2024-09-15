@@ -8,40 +8,37 @@ export default function ItemList() {
   const [sortBy, setSortBy] = useState("category");
 
   const handleSortByName = (event) => {
-    setSortBy("name")
+    setSortBy("name");
   };
 
   const handleSortByCategory = (event) => {
-    setSortBy("category")
+    setSortBy("category");
   };
 
   const handleGroupByCategory = (event) => {
-    setSortBy("groupbycategory")
-  }
+    setSortBy("groupbycategory");
+  };
 
-
-  let groupedCategoryItems = []
+  let groupedCategoryItems = [];
 
   if (sortBy === "name") {
     items.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortBy === "category") {
     items.sort((a, b) => a.category.localeCompare(b.category));
   } else if (sortBy === "groupbycategory") {
-
     groupedCategoryItems = Object.entries(
       items.reduce((acc, currentItem) => {
-      const key = currentItem.category
+        const key = currentItem.category;
 
-      if (!acc[key]) {
-        acc[key] = []
-      }
+        if (!acc[key]) {
+          acc[key] = [];
+        }
 
-      acc[key].push(currentItem)
+        acc[key].push(currentItem);
 
-      return acc
-
-    },{})
-    ).map(([category,items])) => (({category, items}))
+        return acc;
+      }, {})
+    ).map(([category, items]) => ({ category, items }));
   }
 
   return (
@@ -54,51 +51,49 @@ export default function ItemList() {
         Sort by name
       </button>
       <button
-        type="button"        
+        type="button"
         onClick={handleSortByCategory}
         className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700"
       >
         Sort by category
       </button>
-
       <button
-        type="button"        
+        type="button"
         onClick={handleGroupByCategory}
         className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-700"
       >
-       Group by Category 
+        Group by Category
       </button>
 
       <ul>
-        {sortBy === "groupbycateogory"} ? (
-          groupedCategoryItems.map(({category, items}) -> {
-            <li key = {cateogry}>
-              <h3>{category}</h3>
+        {sortBy === "groupbycategory" ? (
+          groupedCategoryItems.map(({ category, items }) => (
+            <li key={category}>
+              <h3 className="capitalize">{category}</h3>
               <ul>
-                {items.map((item) -> {
-                <li key = {item.id}>
-                  <Item
-                  name = {item.name}
-                  quantity = {item.quantity}
-                  category = {item.category}
-                  />
-                </li>
-              })}
-
+                {items.map((item) => (
+                  <li key={item.id}>
+                    <Item
+                      name={item.name}
+                      quantity={item.quantity}
+                      category={item.category}
+                    />
+                  </li>
+                ))}
               </ul>
-            </li>>
-          })
+            </li>
+          ))
         ) : (
-        {items.map((item) => (
-          <li key={item.id}>
-            <Item
-              name={item.name}
-              quantity={item.quantity}
-              category={item.category}
-            />
-          </li>
-        ))}
-        )
+          items.map((item) => (
+            <li key={item.id}>
+              <Item
+                name={item.name}
+                quantity={item.quantity}
+                category={item.category}
+              />
+            </li>
+          ))
+        )}
       </ul>
     </main>
   );
