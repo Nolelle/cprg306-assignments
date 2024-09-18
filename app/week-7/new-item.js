@@ -2,31 +2,28 @@
 
 import { useState } from "react";
 
-export default function NewItem() {
+export default function NewItem({ onAddItem }) {
   const [quantity, setQuantity] = useState(1);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("produce");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const item = {
-      name,
-      quantity,
-      category
-    };
-
-    console.log(item);
-    alert(JSON.stringify(item));
-
-    setQuantity(1);
-    setName("");
-    setCategory("produce");
-  };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    alert("Form has been submitted.");
+    const id = Math.random().toString(36).substring(2, 15);
+    const item = {
+      id,
+      name,
+      quantity,
+      category
+    }
+
+    onAddItem(item);
+
+    setName("");
+    setCategory("produce");
+    setQuantity(1);
   };
 
   const handleNameChange = (event) => {
@@ -52,7 +49,7 @@ export default function NewItem() {
   return (
     <main className="flex flex-col items-center space-y-4 p-8 text-black">
       <form
-        onSubmit={handleFormSubmit}
+        onSubmit={onAddItem}
         className="bg-white p-6 rounded-lg shadow-md w-96"
       >
         <label
@@ -140,7 +137,7 @@ export default function NewItem() {
 
         <button
           type="submit"
-          onClick={handleSubmit}
+          onClick={handleFormSubmit}
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 cursor-pointer"
         >
           Submit
