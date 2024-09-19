@@ -68,11 +68,11 @@ export default function ItemList({ items }) {
 
       <ul>
         {sortBy === "groupbycategory"
-          ? groupedCategoryItems.map(({ category, sortedItems }) => (
+          ? groupedCategoryItems.map(({ category, items }) => (
               <li key={category}>
                 <h3 className="capitalize">{category}</h3>
                 <div>
-                  {sortedItems.map((item) => (
+                  {items.map((item) => (
                     <div key={item.id}>
                       <Item
                         name={item.name}
