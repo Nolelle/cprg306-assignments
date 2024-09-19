@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Item from "./item";
-import items from "./items.json";
 
-export default function ItemList() {
+export default function ItemList({ items }) {
   const [sortBy, setSortBy] = useState("category");
 
   const handleSortByName = (event) => {
@@ -19,15 +18,17 @@ export default function ItemList() {
     setSortBy("groupbycategory");
   };
 
+  let sortedItems = [...items];
   let groupedCategoryItems = [];
 
+
   if (sortBy === "name") {
-    items.sort((a, b) => a.name.localeCompare(b.name));
+    sortedItems = [...items].sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortBy === "category") {
-    items.sort((a, b) => a.category.localeCompare(b.category));
+    sortedItems = [...items].sort((a, b) => a.category.localeCompare(b.category));
   } else if (sortBy === "groupbycategory") {
     groupedCategoryItems = Object.entries(
-      items.reduce((acc, currentItem) => {
+      [...items].reduce((acc, currentItem) => {
         const key = currentItem.category;
 
         if (!acc[key]) {
@@ -66,34 +67,32 @@ export default function ItemList() {
       </button>
 
       <ul>
-        {sortBy === "groupbycategory" ? (
-          groupedCategoryItems.map(({ category, items }) => (
-            <li key={category}>
-              <h3 className="capitalize">{category}</h3>
-              <ul>
-                {items.map((item) => (
-                  <li key={item.id}>
-                    <Item
-                      name={item.name}
-                      quantity={item.quantity}
-                      category={item.category}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))
-        ) : (
-          items.map((item) => (
-            <li key={item.id}>
-              <Item
-                name={item.name}
-                quantity={item.quantity}
-                category={item.category}
-              />
-            </li>
-          ))
-        )}
+        {sortBy === "groupbycategory"
+          ? groupedCategoryItems.map(({ category, sortedItems }) => (
+              <li key={category}>
+                <h3 className="capitalize">{category}</h3>
+                <div>
+                  {sortedItems.map((item) => (
+                    <div key={item.id}>
+                      <Item
+                        name={item.name}
+                        quantity={item.quantity}
+                        category={item.category}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </li>
+            ))
+          : sortedItems.map((item) => (
+              <li key={item.id}>
+                <Item
+                  name={item.name}
+                  quantity={item.quantity}
+                  category={item.category}
+                />
+              </li>
+            ))}
       </ul>
     </main>
   );
