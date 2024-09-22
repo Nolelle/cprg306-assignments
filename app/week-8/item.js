@@ -1,3 +1,4 @@
+
 export default function Item({ name, quantity, category, onSelect }) {
   return (
     <div onClick = {onSelect}>
