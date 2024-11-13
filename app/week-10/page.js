@@ -24,7 +24,7 @@ export default function Page() {
             </button>
 
             <Link
-              href="/week-9/shopping-list"
+              href="/week-10/shopping-list"
               className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50 transition duration-300"
             >
               ShoppingList

@@ -2,20 +2,21 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { addItem, getItems } from "../_services/shopping-list-service";
 import { useUserAuth } from "../_utils/auth-context";
 import ItemList from "./item-list";
-import itemsData from "./items.json";
 import MealIdeas from "./meal-ideas";
 import NewItem from "./new-item";
 
 export default function Page() {
   const { user } = useUserAuth();
-  const [items, setItems] = useState(itemsData);
+  const [items, setItems] = useState([]);
   const [selectedItemName, setSelectedItemName] = useState("");
   const router = useRouter();
 
-  const handleAddItem = (item) => {
-    setItems([...items, item]);
+  const handleAddItem = async (item) => {
+    const id = await addItem(user.uid, item);
+    setItems([...items, { ...item, id }]);
   };
 
   const handleItemSelect = (item) => {
@@ -29,8 +30,13 @@ export default function Page() {
   };
 
   useEffect(() => {
+    const loadItems = async () => {
+      const items = await getItems(user.uid).then((items) => setItems(items));
+    };
     if (!user) {
-      router.push("/week-9");
+      router.push("/week-10");
+    } else {
+      loadItems();
     }
   }, [user, router]);
 
